@@ -1,5 +1,5 @@
 ---
-name: x-digest
+name: xfeed
 description: Generate a personalised daily digest from a scraped X (Twitter) feed. Expects filtered feed JSON as input alongside the user's interest profile.
 ---
 
@@ -13,7 +13,7 @@ Your job: produce a concise, scannable daily digest.
 ## Output Format
 
 ### Top Posts
-The 3-5 most relevant posts to the user's interests. For each:
+The 8-10 most relevant posts to the user's interests. For each:
 - Who posted it and a one-line summary
 - Why it matters to the user's interests
 - Link if available

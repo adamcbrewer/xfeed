@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-x-digest is a CLI tool that scrapes an authenticated user's X (Twitter) timeline via Playwright headless browser, applies configurable rule-based filters, then generates a personalised daily digest via an opencode skill and your local LLM.
+xfeed is a CLI tool that scrapes an authenticated user's X (Twitter) timeline via Playwright headless browser, applies configurable rule-based filters, then generates a personalised daily digest via an opencode skill and your local LLM.
 
 ## Tech Stack
 
@@ -19,7 +19,7 @@ x-digest is a CLI tool that scrapes an authenticated user's X (Twitter) timeline
 The project has a two-phase pipeline:
 
 1. **Scrape & Filter** (`src/`) — Playwright opens X in a headless browser with saved session cookies, scrolls the timeline, intercepts GraphQL API responses (`HomeTimeline`, `Trending`), parses them into a normalised tweet schema, and applies rule-based filters.
-2. **LLM Digest** (`.opencode/skills/x-digest/SKILL.md`) — The `/digest` command runs the scrape pipeline then feeds the filtered JSON to the opencode agent, which uses the `x-digest` skill to produce a concise, scannable digest.
+2. **LLM Digest** (`.opencode/skills/xfeed/SKILL.md`) — The `/digest` command runs the scrape pipeline then feeds the filtered JSON to the opencode agent, which uses the `xfeed` skill to produce a concise, scannable digest.
 
 ### Key modules
 
@@ -32,7 +32,7 @@ The project has a two-phase pipeline:
 | `src/pipeline.ts` | Phase 1 orchestrator (scrape → parse → filter) |
 | `scripts/run.ts` | CLI entry point with `--scrape-only` and `--config` flags |
 | `scripts/setup-auth.ts` | One-time headed browser login to save session cookies |
-| `.opencode/skills/x-digest/SKILL.md` | Digest skill prompt for opencode agent |
+| `.opencode/skills/xfeed/SKILL.md` | Digest skill prompt for opencode agent |
 | `.opencode/commands/digest.md` | `/digest` command — runs scrape and feeds output to LLM |
 
 ## Code Conventions
@@ -54,7 +54,7 @@ pnpm typecheck     # tsc --noEmit
 
 - Tests live in `tests/` mirroring `src/` structure.
 - Test fixtures are sample GraphQL responses in `tests/fixtures/`.
-- `writeFileSync` is mocked in tests to prevent file I/O.
+- Parse and filter functions are pure (no I/O) — tests need no mocks.
 - Filter tests use `makeTweet()` and `makeConfig()` factory helpers for concise test setup.
 
 ## Sensitive Files (never commit)
@@ -79,7 +79,7 @@ register(function myNewFilter(tweet, config) {
 
 ### Changing the digest prompt
 
-Edit `.opencode/skills/x-digest/SKILL.md`. This is the skill prompt used by the opencode agent when running `/digest`.
+Edit `.opencode/skills/xfeed/SKILL.md`. This is the skill prompt used by the opencode agent when running `/digest`.
 
 ### Debugging scrape issues
 

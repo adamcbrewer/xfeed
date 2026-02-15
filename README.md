@@ -1,4 +1,4 @@
-# x-digest
+# xfeed
 
 A CLI tool that scrapes your personal X (Twitter) timeline and trending topics via a headless browser, applies configurable filters, then uses an opencode skill to produce a personalised daily digest via your local LLM.
 
@@ -86,7 +86,7 @@ In the opencode TUI, run:
 /digest
 ```
 
-This scrapes your timeline, applies filters, and feeds the result to your local LLM using the `x-digest` skill. The agent produces a personalised daily digest.
+This scrapes your timeline, applies filters, and feeds the result to your local LLM using the `xfeed` skill. The agent produces a personalised daily digest.
 
 ### Scrape only (no LLM)
 
@@ -145,7 +145,7 @@ Each run writes intermediate files to a timestamped subdirectory under `data/` (
 | 1b | `src/parse.ts` | Normalize raw GraphQL responses into flat tweet schema |
 | 1c | `src/filter.ts` | Rule-based filtering with extensible registry |
 | 1d | `src/pipeline.ts` | Orchestrates scrape → parse → filter |
-| 2 | `.opencode/skills/x-digest/SKILL.md` | Digest prompt for opencode agent |
+| 2 | `.opencode/skills/xfeed/SKILL.md` | Digest prompt for opencode agent |
 | 3 | `.opencode/commands/digest.md` | `/digest` command — scrapes and feeds to LLM |
 
 ## Development
