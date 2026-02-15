@@ -1,12 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { applyAll } from "../src/filter.js";
 import type { Tweet } from "../src/parse.js";
 import type { Config } from "../src/config.js";
-
-vi.mock("node:fs", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("node:fs")>();
-  return { ...actual, writeFileSync: vi.fn() };
-});
 
 function makeTweet(overrides: Partial<Tweet> = {}): Tweet {
   return {
@@ -51,7 +46,6 @@ function makeConfig(overrides: Partial<Config["filters"]> = {}): Config {
       maxAgeHours: 24,
       ...overrides,
     },
-    llm: { model: "claude-sonnet-4-5-20250929", maxTokens: 2000 },
   };
 }
 

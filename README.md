@@ -1,8 +1,8 @@
 # x-digest
 
-A CLI tool that scrapes your personal X (Twitter) timeline and trending topics via a headless browser, applies configurable filters, then uses an LLM to produce a personalised daily digest.
+A CLI tool that scrapes your personal X (Twitter) timeline and trending topics via a headless browser, applies configurable filters, then uses an opencode skill to produce a personalised daily digest via your local LLM.
 
-Built with TypeScript, Playwright for browser automation, and the Anthropic SDK for summarisation.
+Built with TypeScript, Playwright for browser automation, and [opencode](https://opencode.ai) for LLM-powered digest generation.
 
 ## How it works
 
@@ -12,7 +12,7 @@ Playwright headless browser
   → Intercepts GraphQL API responses (HomeTimeline, Trending)
   → Extracts structured tweet data (no DOM parsing)
   → Applies rule-based filters (keywords, accounts, language, engagement)
-  → Sends filtered feed to Claude for digest generation
+  → opencode /digest command feeds filtered data to your local LLM
 ```
 
 X.com is a SPA that fetches data via internal GraphQL endpoints. Rather than scraping fragile HTML, this tool intercepts those API responses directly — getting richer data (impression counts, conversation IDs, card metadata) with better reliability.
@@ -22,7 +22,7 @@ X.com is a SPA that fetches data via internal GraphQL endpoints. Rather than scr
 - **Node.js** >= 18
 - **pnpm** (install via `corepack enable` or `npm i -g pnpm`)
 - An **X (Twitter) account** you can log into in a browser
-- An **Anthropic API key** (for digest generation)
+- **opencode** installed and configured with an LLM provider
 
 ## Setup
 
@@ -36,13 +36,6 @@ pnpm install
 
 ```bash
 cp config.example.yaml config.yaml
-cp .env.example .env
-```
-
-Edit `.env` and add your Anthropic API key:
-
-```
-ANTHROPIC_API_KEY=sk-ant-your-key-here
 ```
 
 Edit `config.yaml` to customise your digest:
@@ -71,7 +64,7 @@ filters:
   maxAgeHours: 24
 ```
 
-See `config.example.yaml` for the full list of options including scrape timing, LLM model, and token limits.
+See `config.example.yaml` for the full list of options including scrape timing.
 
 ### 3. Authenticate with X
 
@@ -85,13 +78,15 @@ You only need to do this once. Sessions typically last weeks/months. If a scrape
 
 ## Usage
 
-### Generate a digest (full pipeline)
+### Generate a digest (opencode)
 
-```bash
-pnpm digest
+In the opencode TUI, run:
+
+```
+/digest
 ```
 
-This runs the complete pipeline: scrape your timeline → parse GraphQL responses → apply filters → send to Claude → print your digest.
+This scrapes your timeline, applies filters, and feeds the result to your local LLM using the `x-digest` skill. The agent produces a personalised daily digest.
 
 ### Scrape only (no LLM)
 
@@ -101,21 +96,13 @@ pnpm digest:scrape-only
 
 Runs scrape + parse + filter and outputs the filtered JSON to stdout. Useful for inspecting what data is captured before sending to the LLM.
 
-### Summarize an existing feed
-
-```bash
-pnpm tsx scripts/run.ts --summarize data/filtered-feed.json
-```
-
-Skip scraping entirely — just run the LLM summariser on a previously captured feed file.
-
 ### Pipeline only (phase 1)
 
 ```bash
 pnpm scrape
 ```
 
-Runs the scrape → parse → filter pipeline and prints filtered JSON. Designed for piping into other tools or an opencode skill.
+Runs the scrape → parse → filter pipeline and prints filtered JSON.
 
 ### Custom config path
 
@@ -125,13 +112,13 @@ pnpm tsx scripts/run.ts --config path/to/config.yaml
 
 ### Output files
 
-Each run writes intermediate files to `data/` (all gitignored):
+Each run writes intermediate files to a timestamped subdirectory under `data/` (all gitignored):
 
 | File | Contents |
 |------|----------|
-| `data/raw-feed.json` | Raw GraphQL response payloads from X |
-| `data/parsed-feed.json` | Normalised, deduplicated tweets and trends |
-| `data/filtered-feed.json` | After rule-based filters, with stats |
+| `data/<timestamp>/raw-feed.json` | Raw GraphQL response payloads from X |
+| `data/<timestamp>/parsed-feed.json` | Normalised, deduplicated tweets and trends |
+| `data/<timestamp>/filtered-feed.json` | After rule-based filters, with stats |
 
 ## Configuration reference
 
@@ -149,8 +136,6 @@ Each run writes intermediate files to `data/` (all gitignored):
 | | `minLikes` | `0` | Minimum like count to keep |
 | | `excludeRetweets` | `true` | Remove pure retweets (keeps quote tweets) |
 | | `maxAgeHours` | `24` | Discard tweets older than this |
-| `llm` | `model` | `claude-sonnet-4-5-20250929` | Anthropic model ID |
-| | `maxTokens` | `2000` | Max tokens for digest response |
 
 ## Architecture
 
@@ -160,8 +145,8 @@ Each run writes intermediate files to `data/` (all gitignored):
 | 1b | `src/parse.ts` | Normalize raw GraphQL responses into flat tweet schema |
 | 1c | `src/filter.ts` | Rule-based filtering with extensible registry |
 | 1d | `src/pipeline.ts` | Orchestrates scrape → parse → filter |
-| 2 | `src/summarize.ts` | Anthropic API call with `skill/prompt.md` system prompt |
-| 3 | `scripts/run.ts` | Standalone entry point for all phases |
+| 2 | `.opencode/skills/x-digest/SKILL.md` | Digest prompt for opencode agent |
+| 3 | `.opencode/commands/digest.md` | `/digest` command — scrapes and feeds to LLM |
 
 ## Development
 
@@ -189,8 +174,7 @@ It's automatically included in the pipeline — no wiring needed.
 | File | Contains | Gitignored |
 |------|----------|------------|
 | `auth/storage-state.json` | Full X session cookies | Yes |
-| `.env` | Anthropic API key | Yes |
 | `config.yaml` | Personal interests, blocked accounts | Yes |
-| `data/*.json` | Your scraped feed data | Yes |
+| `data/` | Your scraped feed data | Yes |
 
 Session state contains your full X session cookies — treat it like a password. Never commit it.

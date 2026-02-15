@@ -1,23 +1,37 @@
-import { writeFileSync } from "node:fs";
-import { resolve } from "node:path";
 import type { Tweet, ParsedFeed } from "./parse.js";
 import type { Config } from "./config.js";
-
-const FILTERED_FEED_PATH = resolve("data/filtered-feed.json");
 
 type FilterFn = (tweet: Tweet, config: Config) => boolean;
 
 const registry: FilterFn[] = [];
+const regexCache = new Map<string, RegExp | null>();
 
 function register(fn: FilterFn): FilterFn {
   registry.push(fn);
   return fn;
 }
 
+function compileRegex(pattern: string): RegExp | null {
+  const cached = regexCache.get(pattern);
+  if (cached !== undefined) return cached;
+  try {
+    const re = new RegExp(pattern, "i");
+    regexCache.set(pattern, re);
+    return re;
+  } catch {
+    console.error(`Invalid blockKeyword regex, skipping: ${pattern}`);
+    regexCache.set(pattern, null);
+    return null;
+  }
+}
+
 register(function blockKeywords(tweet, config) {
   const patterns = config.filters.blockKeywords;
   if (patterns.length === 0) return true;
-  return !patterns.some((p) => new RegExp(p, "i").test(tweet.text));
+  return !patterns.some((p) => {
+    const re = compileRegex(p);
+    return re ? re.test(tweet.text) : false;
+  });
 });
 
 register(function blockAccounts(tweet, config) {
@@ -89,18 +103,10 @@ export function applyAll(
 export function filterFeed(parsed: ParsedFeed, config: Config): FilteredFeed {
   const { filtered, stats } = applyAll(parsed.tweets, config);
 
-  const result: FilteredFeed = {
+  return {
     tweets: filtered,
     trends: parsed.trends,
     filterStats: stats,
     scrapedAt: parsed.scrapedAt,
   };
-
-  writeFileSync(FILTERED_FEED_PATH, JSON.stringify(result, null, 2));
-  console.error(
-    `Filtered: ${stats.totalScraped} → ${stats.afterFiltering} tweets. ` +
-      `Removed by: ${JSON.stringify(stats.removedBy)}`
-  );
-
-  return result;
 }

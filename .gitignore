@@ -1,13 +1,13 @@
 # Auth & credentials
 auth/storage-state.json
-.env
 
 # User config (template is committed, actual config is not)
 config.yaml
 config.yml
 
 # Runtime data
-data/*.json
+data/*
+!data/.gitkeep
 
 # Node
 node_modules/

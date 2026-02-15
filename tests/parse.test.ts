@@ -1,11 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { parse } from "../src/parse.js";
 import sampleTimeline from "./fixtures/sample-timeline.json";
-
-vi.mock("node:fs", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("node:fs")>();
-  return { ...actual, writeFileSync: vi.fn() };
-});
 
 describe("parse", () => {
   const raw = {

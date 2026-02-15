@@ -1,6 +1,6 @@
 import { chromium } from "playwright";
 import { resolve } from "node:path";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, chmodSync } from "node:fs";
 
 const STORAGE_STATE_PATH = resolve("auth/storage-state.json");
 
@@ -12,11 +12,25 @@ async function main(): Promise<void> {
 
   const browser = await chromium.launch({
     headless: false,
-    args: ["--disable-blink-features=AutomationControlled"],
+    channel: "chrome",
+    args: [
+      "--disable-blink-features=AutomationControlled",
+      "--no-first-run",
+      "--no-default-browser-check",
+    ],
   });
 
-  const context = await browser.newContext();
+  const context = await browser.newContext({
+    userAgent:
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    viewport: { width: 1280, height: 800 },
+  });
+
   const page = await context.newPage();
+
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "webdriver", { get: () => false });
+  });
 
   await page.goto("https://x.com/login");
 
@@ -26,9 +40,11 @@ async function main(): Promise<void> {
   });
 
   await context.storageState({ path: STORAGE_STATE_PATH });
+  chmodSync(STORAGE_STATE_PATH, 0o600);
   console.log(`Session saved to ${STORAGE_STATE_PATH}`);
 
   await browser.close();
+  process.exit(0);
 }
 
 main();

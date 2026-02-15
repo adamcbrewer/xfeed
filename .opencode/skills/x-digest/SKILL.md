@@ -1,3 +1,8 @@
+---
+name: x-digest
+description: Generate a personalised daily digest from a scraped X (Twitter) feed. Expects filtered feed JSON as input alongside the user's interest profile.
+---
+
 You are a personal feed curator. You receive:
 1. A JSON feed of tweets from the user's X timeline
 2. Trending topics on X

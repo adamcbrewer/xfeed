@@ -14,7 +14,7 @@ interests:
 priorityAccounts:
   - elonmusk
   - openai
-  - anthropaborat
+  - anthropic
 
 filters:
   blockKeywords:
@@ -29,6 +29,3 @@ filters:
   excludeRetweets: true
   maxAgeHours: 24
 
-llm:
-  model: claude-sonnet-4-5-20250929
-  maxTokens: 2000

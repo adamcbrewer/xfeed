@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import YAML from "yaml";
 import { z } from "zod";
 
@@ -27,19 +27,23 @@ const ConfigSchema = z.object({
       maxAgeHours: z.number().default(24),
     })
     .default({}),
-
-  llm: z
-    .object({
-      model: z.string().default("claude-sonnet-4-5-20250929"),
-      maxTokens: z.number().default(2000),
-    })
-    .default({}),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
 
+function resolveConfigPath(path: string): string {
+  if (existsSync(path)) return path;
+
+  let alt: string | null = null;
+  if (path.endsWith(".yaml")) alt = path.replace(/\.yaml$/, ".yml");
+  else if (path.endsWith(".yml")) alt = path.replace(/\.yml$/, ".yaml");
+
+  return alt && existsSync(alt) ? alt : path;
+}
+
 export function loadConfig(path: string): Config {
-  const raw = readFileSync(path, "utf-8");
+  const resolved = resolveConfigPath(path);
+  const raw = readFileSync(resolved, "utf-8");
   const parsed = YAML.parse(raw);
   return ConfigSchema.parse(parsed);
 }

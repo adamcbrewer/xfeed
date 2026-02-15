@@ -1,7 +1,4 @@
-import { writeFileSync } from "node:fs";
-import { resolve } from "node:path";
-
-const PARSED_FEED_PATH = resolve("data/parsed-feed.json");
+import type { CapturedData } from "./scrape.js";
 
 export interface Tweet {
   id: string;
@@ -38,11 +35,6 @@ export interface ParsedFeed {
   tweets: Tweet[];
   trends: Trend[];
   scrapedAt: string;
-}
-
-interface CapturedData {
-  tweets: unknown[];
-  trends: unknown[];
 }
 
 function extractTweetResult(entry: Record<string, unknown>): Record<string, unknown> | null {
@@ -114,7 +106,7 @@ function parseTweetObject(raw: Record<string, unknown>): Tweet | null {
         likes: (legacy.favorite_count as number) ?? 0,
         retweets: (legacy.retweet_count as number) ?? 0,
         replies: (legacy.reply_count as number) ?? 0,
-        views: viewCount ? parseInt(viewCount, 10) : 0,
+        views: viewCount ? Number(viewCount) : 0,
       },
       isRetweet,
       isQuote: (legacy.is_quote_status as boolean) ?? false,
@@ -222,9 +214,6 @@ export function parse(raw: CapturedData): ParsedFeed {
     trends,
     scrapedAt: new Date().toISOString(),
   };
-
-  writeFileSync(PARSED_FEED_PATH, JSON.stringify(parsed, null, 2));
-  console.error(`Parsed ${tweets.length} tweets, ${trends.length} trends.`);
 
   return parsed;
 }
