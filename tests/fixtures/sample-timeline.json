@@ -1,0 +1,265 @@
+{
+  "data": {
+    "home": {
+      "home_timeline_urt": {
+        "instructions": [
+          {
+            "type": "TimelineAddEntries",
+            "entries": [
+              {
+                "entryId": "tweet-1234567890",
+                "sortIndex": "1234567890",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "itemType": "TimelineTweet",
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "1234567890",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "id": "user-1",
+                              "is_blue_verified": true,
+                              "legacy": {
+                                "screen_name": "techuser",
+                                "name": "Tech User",
+                                "followers_count": 50000,
+                                "verified": false
+                              }
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "15000"
+                        },
+                        "legacy": {
+                          "id_str": "1234567890",
+                          "full_text": "Just released a new open source TypeScript library for GraphQL parsing. Check it out! https://t.co/example",
+                          "created_at": "Mon Feb 14 12:00:00 +0000 2026",
+                          "favorite_count": 250,
+                          "retweet_count": 45,
+                          "reply_count": 12,
+                          "is_quote_status": false,
+                          "lang": "en",
+                          "entities": {
+                            "urls": [
+                              {
+                                "expanded_url": "https://github.com/example/graphql-parser"
+                              }
+                            ]
+                          },
+                          "extended_entities": {
+                            "media": []
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "entryId": "tweet-9876543210",
+                "sortIndex": "9876543210",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "itemType": "TimelineTweet",
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "9876543210",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "id": "user-2",
+                              "is_blue_verified": false,
+                              "legacy": {
+                                "screen_name": "spambot123",
+                                "name": "Spam Bot",
+                                "followers_count": 100,
+                                "verified": false
+                              }
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "50"
+                        },
+                        "legacy": {
+                          "id_str": "9876543210",
+                          "full_text": "gm crypto fam! Drop your ETH address below for free airdrop!",
+                          "created_at": "Mon Feb 14 10:00:00 +0000 2026",
+                          "favorite_count": 2,
+                          "retweet_count": 1,
+                          "reply_count": 30,
+                          "is_quote_status": false,
+                          "lang": "en",
+                          "entities": {
+                            "urls": []
+                          },
+                          "extended_entities": {
+                            "media": []
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "entryId": "tweet-1111111111",
+                "sortIndex": "1111111111",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "itemType": "TimelineTweet",
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "1111111111",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "id": "user-3",
+                              "is_blue_verified": true,
+                              "legacy": {
+                                "screen_name": "airesearcher",
+                                "name": "AI Researcher",
+                                "followers_count": 120000,
+                                "verified": true
+                              }
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "80000"
+                        },
+                        "legacy": {
+                          "id_str": "1111111111",
+                          "full_text": "Our new paper on efficient transformer architectures shows 3x speedup with minimal quality loss. Paper: https://t.co/arxiv123",
+                          "created_at": "Mon Feb 14 15:00:00 +0000 2026",
+                          "favorite_count": 1500,
+                          "retweet_count": 300,
+                          "reply_count": 45,
+                          "is_quote_status": false,
+                          "lang": "en",
+                          "entities": {
+                            "urls": [
+                              {
+                                "expanded_url": "https://arxiv.org/abs/2026.12345"
+                              }
+                            ]
+                          },
+                          "extended_entities": {
+                            "media": []
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "entryId": "tweet-2222222222",
+                "sortIndex": "2222222222",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "itemType": "TimelineTweet",
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "2222222222",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "id": "user-4",
+                              "is_blue_verified": false,
+                              "legacy": {
+                                "screen_name": "retweeter",
+                                "name": "Retweeter",
+                                "followers_count": 500,
+                                "verified": false
+                              }
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "200"
+                        },
+                        "legacy": {
+                          "id_str": "2222222222",
+                          "full_text": "RT @someone: This is a retweet",
+                          "created_at": "Mon Feb 14 09:00:00 +0000 2026",
+                          "favorite_count": 0,
+                          "retweet_count": 50,
+                          "reply_count": 0,
+                          "is_quote_status": false,
+                          "lang": "en",
+                          "retweeted_status_result": {
+                            "result": {}
+                          },
+                          "entities": {
+                            "urls": []
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "entryId": "tweet-3333333333",
+                "sortIndex": "3333333333",
+                "content": {
+                  "entryType": "TimelineTimelineItem",
+                  "itemContent": {
+                    "itemType": "TimelineTweet",
+                    "tweet_results": {
+                      "result": {
+                        "__typename": "Tweet",
+                        "rest_id": "3333333333",
+                        "core": {
+                          "user_results": {
+                            "result": {
+                              "id": "user-5",
+                              "is_blue_verified": false,
+                              "legacy": {
+                                "screen_name": "jpuser",
+                                "name": "Japanese User",
+                                "followers_count": 3000,
+                                "verified": false
+                              }
+                            }
+                          }
+                        },
+                        "views": {
+                          "count": "500"
+                        },
+                        "legacy": {
+                          "id_str": "3333333333",
+                          "full_text": "This is a non-english tweet for testing",
+                          "created_at": "Mon Feb 14 08:00:00 +0000 2026",
+                          "favorite_count": 100,
+                          "retweet_count": 10,
+                          "reply_count": 5,
+                          "is_quote_status": false,
+                          "lang": "ja",
+                          "entities": {
+                            "urls": []
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

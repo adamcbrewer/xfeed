@@ -1,0 +1,34 @@
+scrape:
+  scrollCount: 10
+  scrollDelayMin: 1.5
+  scrollDelayMax: 3.5
+  headless: true
+  scrapeTrends: true
+  timeout: 60
+
+interests:
+  - AI and machine learning
+  - TypeScript and web development
+  - Open source projects
+
+priorityAccounts:
+  - elonmusk
+  - openai
+  - anthropaborat
+
+filters:
+  blockKeywords:
+    - "gm crypto fam"
+    - "drop your .* below"
+    - "like if you agree"
+  blockAccounts:
+    - spambot123
+  languages:
+    - en
+  minLikes: 5
+  excludeRetweets: true
+  maxAgeHours: 24
+
+llm:
+  model: claude-sonnet-4-5-20250929
+  maxTokens: 2000

@@ -1,0 +1,30 @@
+{
+  "name": "x-digest",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "auth": "tsx scripts/setup-auth.ts",
+    "scrape": "tsx src/pipeline.ts",
+    "digest": "tsx scripts/run.ts",
+    "digest:scrape-only": "tsx scripts/run.ts --scrape-only",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/ scripts/ tests/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "dotenv": "^16.4.0",
+    "playwright": "^1.50.0",
+    "yaml": "^2.4.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "eslint": "^9.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

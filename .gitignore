@@ -1,0 +1,26 @@
+# Auth & credentials
+auth/storage-state.json
+.env
+
+# User config (template is committed, actual config is not)
+config.yaml
+config.yml
+
+# Runtime data
+data/*.json
+
+# Node
+node_modules/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Playwright
+playwright-report/
+test-results/
